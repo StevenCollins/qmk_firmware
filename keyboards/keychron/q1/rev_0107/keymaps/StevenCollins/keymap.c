@@ -142,17 +142,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
 }
 
+// Set initial RGB colour and mode
 void keyboard_post_init_user(void) {
     rgb_matrix_sethsv_noeeprom(85, 255, 192);
     rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_REACTIVE_MULTIWIDE);
 }
 
+// Enable Caps Lock indicator
 void rgb_matrix_indicators_user() {
     if (host_keyboard_led_state().caps_lock) {
         rgb_matrix_set_color(CAPS_LOCK_LED_INDEX, 192, 192, 192);
     }
 }
 
+// Show active keys on layer when Fn held
 void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if (get_highest_layer(layer_state) > 0) {
         uint8_t layer = get_highest_layer(layer_state);
@@ -168,4 +171,16 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             }
         }
     }
+}
+
+// Send KVM hotkey on Mac/Win switch change
+bool dip_switch_update_user(uint8_t index, bool active) {
+    if (index == 0) {
+        if (active) {
+            SEND_STRING(SS_TAP(X_SLCK) SS_TAP(X_SLCK) "1"); // X_SLCK is X_SCRL in future QMK versions
+        } else {
+            SEND_STRING(SS_TAP(X_SLCK) SS_TAP(X_SLCK) "2"); // X_SLCK is X_SCRL in future QMK versions
+        }
+    }
+    return true;
 }
