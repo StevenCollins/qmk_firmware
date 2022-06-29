@@ -177,9 +177,9 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 bool dip_switch_update_user(uint8_t index, bool active) {
     if (index == 0) {
         if (active) {
-            SEND_STRING(SS_TAP(X_SLCK) SS_TAP(X_SLCK) "1"); // X_SLCK is X_SCRL in future QMK versions
+            SEND_STRING(SS_TAP(X_LCTL) SS_TAP(X_LCTL) "1");
         } else {
-            SEND_STRING(SS_TAP(X_SLCK) SS_TAP(X_SLCK) "2"); // X_SLCK is X_SCRL in future QMK versions
+            SEND_STRING(SS_TAP(X_LCTL) SS_TAP(X_LCTL) "2");
         }
     }
     return true;
