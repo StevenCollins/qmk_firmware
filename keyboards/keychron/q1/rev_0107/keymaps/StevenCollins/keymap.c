@@ -195,3 +195,28 @@ bool dip_switch_update_user(uint8_t index, bool active) {
     }
     return true;
 }
+
+// Send left/right or volume up/down from knob
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    if (index == 0) {
+        switch (get_highest_layer(layer_state)) {
+            case MAC_BASE:
+            case WIN_BASE:
+                    if (clockwise) {
+                        tap_code_delay(KC_RIGHT, 2);
+                    } else {
+                        tap_code_delay(KC_LEFT, 2);
+                    }
+                break;
+            case MAC_FN:
+            case WIN_FN:
+                if (clockwise) {
+                    tap_code_delay(KC_VOLU, 2);
+                } else {
+                    tap_code_delay(KC_VOLD, 2);
+                }
+                break;
+        }
+    }
+    return false;
+}
